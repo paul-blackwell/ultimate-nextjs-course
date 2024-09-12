@@ -5,7 +5,7 @@ export default async function Home() {
   const todo = await data.json();
   console.log(todo);
 
-  throw new Error('This is an error');
+  // throw new Error('This is an error');
   return (
     <main>
       <h1>{todo.title}</h1>
