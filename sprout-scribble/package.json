@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate" : "npx drizzle-kit generate",
-    "db:migrate" : "npx drizzle-kit migrate",
-    "db:push" : "drizzle-kit push"
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "npx drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.5",
@@ -22,6 +22,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.24.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
