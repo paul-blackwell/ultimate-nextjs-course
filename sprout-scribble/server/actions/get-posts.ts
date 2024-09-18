@@ -5,9 +5,9 @@ import { db } from '@/server';
 export default async function getPosts() {
   const posts = await db.query.posts.findMany();
 
-  if(!posts) {
-    return {error: 'No posts found'}
+  if (!posts) {
+    return { error: 'No posts found' };
   }
 
-  return { data: posts}
+  return { data: posts };
 }
