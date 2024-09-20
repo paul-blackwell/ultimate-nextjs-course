@@ -1,7 +1,11 @@
 export default async function Home() {
   return (
-    <main>
-      <h1>Home Page</h1>
+    <main className="bg-blue-400 flex justify-between px-12 py-4">
+      <span>Hey</span>
+      <span>Hey</span>
+      <span>Hey</span>
+      <span>Hey</span>
+      <span>Hey</span>
     </main>
   );
 }
