@@ -1,29 +1,10 @@
-import getPosts from '@/server/actions/get-posts';
-import createPost from '@/server/actions/create-post';
+import { Button } from '@/components/ui/button';
 
 export default async function Home() {
-  const { error, data } = await getPosts();
-
-  if (error) {
-    throw new Error(error);
-  }
-
-  if (data) {
-    return (
-      <main>
-        {data.map((post) => (
-          <div key={post.id}>{post.title}</div>
-        ))}
-        <form action={createPost}>
-          <input
-            className="bg-black"
-            type="text"
-            name="title"
-            placeholder="Title"
-          />
-          <button type="submit">Submit</button>
-        </form>
-      </main>
-    );
-  }
+  return (
+    <main className="px-12 py-4">
+      <h1>Home page</h1>
+      <Button>Click me</Button>
+    </main>
+  );
 }
