@@ -1,3 +1,13 @@
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import Socials from '@/components/auth/socials';
+import { BackButton } from '@/components/auth/back-button';
+
 type CardWrapperProps = {
   children: React.ReactNode;
   cardTitle: string;
@@ -12,4 +22,21 @@ export default function AuthCard({
   backButtonHref,
   backButtonLabel,
   showSocials,
-}: CardWrapperProps) {}
+}: CardWrapperProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{cardTitle}</CardTitle>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+      {showSocials && (
+        <CardFooter>
+          <Socials />
+        </CardFooter>
+      )}
+      <CardFooter>
+        <BackButton href={backButtonHref} label={backButtonLabel} />
+      </CardFooter>
+    </Card>
+  );
+}
