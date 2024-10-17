@@ -1,8 +1,22 @@
 'use client';
 
 import AuthCard from '@/components/auth/auth-card';
+import { Form } from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { LoginSchema } from '@/types/login-schema';
 
 export default function LoginForm() {
+  const form = useForm({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = () => {};
+
   return (
     <AuthCard
       cardTitle="Welcome back!"
@@ -10,7 +24,9 @@ export default function LoginForm() {
       backButtonLabel="Create a new account"
       showSocials
     >
-      <div />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}></form>
+      </Form>
     </AuthCard>
   );
 }
