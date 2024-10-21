@@ -2307,6 +2307,11 @@ next-auth@5.0.0-beta.16:
   dependencies:
     "@auth/core" "0.28.1"
 
+next-safe-action@^7.9.4:
+  version "7.9.4"
+  resolved "https://registry.yarnpkg.com/next-safe-action/-/next-safe-action-7.9.4.tgz#576b9b0296c099387ba90ead47c0eb8632e328fa"
+  integrity sha512-ZQtkLzaSaf+3vMAHS5G7U1nG/Nw1o++25br52J1dHiAGU0RbyE8erhoie7A5HsypmjbdTNMZotTvWLYt1PGeDA==
+
 next@14.2.5:
   version "14.2.5"
   resolved "https://registry.npmjs.org/next/-/next-14.2.5.tgz"
