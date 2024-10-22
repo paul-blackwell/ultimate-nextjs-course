@@ -20,6 +20,7 @@ import Link from 'next/link';
 import { emailSignIn } from '@/server/actions/email-sign';
 import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 export default function LoginForm() {
   const form = useForm({
@@ -29,8 +30,11 @@ export default function LoginForm() {
       password: '',
     },
   });
+  const [error, setError] = useState();
 
-  const { execute, status } = useAction(emailSignIn, {});
+  const { execute, status } = useAction(emailSignIn, {
+    onSuccess(data) {},
+  });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     // React hook form will handle all validation, so if we get values the form was submitted correctly
