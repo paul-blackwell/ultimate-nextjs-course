@@ -18,8 +18,9 @@ export const emailSignIn = actionClient
       return { error: 'User not found' };
     }
 
-    if (existingUser?.emailVerified) {
-    }
+    // if (existingUser?.emailVerified) {
+    // }
 
+    console.log(email, password, code);
     return { success: email };
   });
