@@ -22,7 +22,7 @@ import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -45,9 +45,9 @@ export default function LoginForm() {
 
   return (
     <AuthCard
-      cardTitle="Welcome back!"
-      backButtonHref="/auth/register"
-      backButtonLabel="Create a new account"
+      cardTitle="Create an account"
+      backButtonHref="/auth/login"
+      backButtonLabel="Already have an account?"
       showSocials
     >
       <Form {...form}>
