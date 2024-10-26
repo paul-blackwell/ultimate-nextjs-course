@@ -13,32 +13,33 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { LoginSchema } from '@/types/login-schema';
+import { RegisterSchema } from '@/types/register-schema';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { emailSignIn } from '@/server/actions/email-sign';
 import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { emailRegister } from '@/server/actions/email-register';
 
 export default function RegisterForm() {
-  const form = useForm({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
   });
   const [error, setError] = useState();
 
-  const { execute, status } = useAction(emailSignIn, {
+  const { execute, status } = useAction(emailRegister, {
     onSuccess(data) {
       console.log(data);
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     // React hook form will handle all validation, so if we get values the form was submitted correctly
     execute(values);
   };
@@ -53,6 +54,25 @@ export default function RegisterForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Username"
+                      type="text"
+                      autoComplete="text"
+                    />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -102,7 +122,7 @@ export default function RegisterForm() {
               status === 'executing' ? 'animate-pulse' : ''
             )}
           >
-            Login
+            Register
           </Button>
         </form>
       </Form>
