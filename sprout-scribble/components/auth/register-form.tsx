@@ -20,6 +20,7 @@ import Link from 'next/link';
 import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { emailRegister } from '@/server/actions/email-register';
 
 export default function RegisterForm() {
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -32,15 +33,15 @@ export default function RegisterForm() {
   });
   const [error, setError] = useState();
 
-  // const { execute, status } = useAction(emailSignIn, {
-  //   onSuccess(data) {
-  //     console.log(data);
-  //   },
-  // });
+  const { execute, status } = useAction(emailRegister, {
+    onSuccess(data) {
+      console.log(data);
+    },
+  });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     // React hook form will handle all validation, so if we get values the form was submitted correctly
-    //execute(values);
+    execute(values);
   };
 
   return (
