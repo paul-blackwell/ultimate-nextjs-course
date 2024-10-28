@@ -10,6 +10,7 @@ import {
 import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import type { AdapterAccountType } from 'next-auth/adapters';
+import { createId } from '@paralleldrive/cuid2';
 
 const connectionString = 'postgres://postgres:postgres@localhost:5432/drizzle';
 const pool = postgres(connectionString, { max: 1 });
@@ -57,9 +58,12 @@ export const accounts = pgTable(
 export const emailTokens = pgTable(
   'email_tokens',
   {
-    id: text('id').notNull(),
+    id: text('id')
+      .notNull()
+      .$defaultFn(() => createId),
     token: text('token').notNull(),
     expires: timestamp('expires', { mode: 'date' }).notNull(),
+    email: text('email').notNull(),
   },
   (verificationToken) => ({
     compositePk: primaryKey({
