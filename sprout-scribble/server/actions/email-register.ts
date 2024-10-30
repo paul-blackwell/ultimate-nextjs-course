@@ -6,6 +6,7 @@ import { db } from '..';
 import { eq } from 'drizzle-orm';
 import { users } from '@/server/schema';
 import { generateEmailVerificationToken } from '@/server/actions/tokens';
+import { sendVerificationEmail } from '@/server/actions/email';
 
 const action = createSafeActionClient();
 
@@ -25,9 +26,10 @@ export const emailRegister = action
 
     if (existingUser) {
       if (!existingUser?.emailVerified) {
+        // Send email with verification token
         const verificationToken = await generateEmailVerificationToken(email);
-        // TODO: Send email with verification token
-        // await sendVerificationEmail
+        await sendVerificationEmail(email, verificationToken[0].token);
+
         return { success: 'Email confirmation resent' };
       }
       return { error: 'Email is already in use' };
@@ -40,10 +42,9 @@ export const emailRegister = action
       password: hashedPassword.toString(),
     });
 
+    // Send email with verification token
     const verificationToken = await generateEmailVerificationToken(email);
-
-    // TODO: Send email with verification token
-    // await sendVerificationEmail
+    await sendVerificationEmail(email, verificationToken[0].token);
 
     return { success: 'Confirmation email sent' };
   });
