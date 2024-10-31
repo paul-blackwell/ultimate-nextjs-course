@@ -21,6 +21,8 @@ import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { emailRegister } from '@/server/actions/email-register';
+import { FormSuccess } from '@/components/auth/form-success';
+import { FormError } from '@/components/auth/form-error';
 
 export default function RegisterForm() {
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -31,11 +33,12 @@ export default function RegisterForm() {
       password: '',
     },
   });
-  const [error, setError] = useState();
-
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const { execute, status } = useAction(emailRegister, {
-    onSuccess(data) {
-      console.log(data);
+    onSuccess({ data }) {
+      if (data?.error) setError(data?.error);
+      if (data?.success) setSuccess(data?.success);
     },
   });
 
@@ -111,6 +114,8 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
+            <FormError message={error} />
+            <FormSuccess message={success} />
             <Button size={'sm'} variant={'link'} asChild>
               <Link href="/auth/reset">Forgot your password</Link>
             </Button>
