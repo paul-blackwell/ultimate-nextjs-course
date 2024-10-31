@@ -28,7 +28,10 @@ export const emailRegister = action
       if (!existingUser?.emailVerified) {
         // Send email with verification token
         const verificationToken = await generateEmailVerificationToken(email);
-        await sendVerificationEmail(email, verificationToken[0].token);
+        await sendVerificationEmail(
+          verificationToken[0].email,
+          verificationToken[0].token
+        );
 
         return { success: 'Email confirmation resent' };
       }
@@ -44,7 +47,10 @@ export const emailRegister = action
 
     // Send email with verification token
     const verificationToken = await generateEmailVerificationToken(email);
-    await sendVerificationEmail(email, verificationToken[0].token);
+    await sendVerificationEmail(
+      verificationToken[0].email,
+      verificationToken[0].token
+    );
 
     return { success: 'Confirmation email sent' };
   });
