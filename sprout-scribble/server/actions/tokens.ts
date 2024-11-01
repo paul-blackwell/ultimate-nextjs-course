@@ -3,6 +3,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '..';
 import { emailTokens } from '@/server/schema';
+import { users } from '@/server/schema';
 
 export const getVerificationTokenByEmail = async (email: string) => {
   try {
@@ -34,4 +35,24 @@ export const generateEmailVerificationToken = async (email: string) => {
     })
     .returning();
   return verificationToken;
+};
+
+export const newVerification = async (token: string) => {
+  const existingToken = await generateEmailVerificationToken(token);
+  if (!existingToken) return { error: 'Token not found' };
+
+  const hasExpired = new Date(existingToken[0].expires) < new Date();
+  if (hasExpired) return { error: 'Token has expired' };
+
+  const existingUser = await db.query.users.findFirst({
+    where: eq(users.email, existingToken[0].email),
+  });
+  if (!existingUser) return { error: 'Email does not exist' };
+  await db.update(users).set({
+    emailVerified: new Date(),
+    email: existingToken[0].email,
+  });
+
+  await db.delete(emailTokens).where(eq(emailTokens.id, existingToken[0].id));
+  return { success: 'Email verified' };
 };
