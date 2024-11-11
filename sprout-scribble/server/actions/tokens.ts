@@ -38,11 +38,13 @@ export const generateEmailVerificationToken = async (email: string) => {
 };
 
 export const newVerification = async (token: string) => {
-  const existingToken = await generateEmailVerificationToken(token);
+  const existingToken = await getVerificationTokenByEmail(token);
   if (!existingToken) return { error: 'Token not found' };
 
-  const hasExpired = new Date(existingToken[0].expires) < new Date();
+  const hasExpired = new Date(existingToken.expires) < new Date();
   if (hasExpired) return { error: 'Token has expired' };
+
+  console.log('existingToken:', existingToken[0]);
 
   const existingUser = await db.query.users.findFirst({
     where: eq(users.email, existingToken[0].email),
