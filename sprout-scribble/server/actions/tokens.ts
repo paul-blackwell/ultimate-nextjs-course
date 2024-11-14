@@ -10,10 +10,9 @@ export const getVerificationTokenByEmail = async (email: string) => {
     const verificationToken = await db.query.emailTokens.findFirst({
       where: eq(emailTokens.token, email),
     });
-
     return verificationToken;
   } catch (error) {
-    return { error: null };
+    return null;
   }
 };
 
@@ -42,19 +41,22 @@ export const newVerification = async (token: string) => {
   if (!existingToken) return { error: 'Token not found' };
 
   const hasExpired = new Date(existingToken.expires) < new Date();
+
   if (hasExpired) return { error: 'Token has expired' };
 
-  console.log('existingToken:', existingToken[0]);
-
   const existingUser = await db.query.users.findFirst({
-    where: eq(users.email, existingToken[0].email),
+    where: eq(users.email, existingToken.email),
   });
   if (!existingUser) return { error: 'Email does not exist' };
-  await db.update(users).set({
-    emailVerified: new Date(),
-    email: existingToken[0].email,
-  });
 
-  await db.delete(emailTokens).where(eq(emailTokens.id, existingToken[0].id));
-  return { success: 'Email verified' };
+  await db
+    .update(users)
+    .set({
+      emailVerified: new Date(),
+      email: existingToken.email,
+    })
+    .where(eq(users.id, existingUser.id));
+
+  await db.delete(emailTokens).where(eq(emailTokens.id, existingToken.id));
+  return { success: 'Email Verified' };
 };
