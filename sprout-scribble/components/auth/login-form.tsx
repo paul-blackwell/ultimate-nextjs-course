@@ -17,10 +17,12 @@ import { LoginSchema } from '@/types/login-schema';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { emailSignIn } from '@/server/actions/email-sign';
+import { emailSignIn } from '@/server/actions/email-signin';
 import { useAction } from 'next-safe-action/hooks';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { FormSuccess } from './form-success';
+import { FormError } from './form-error';
 
 export default function LoginForm() {
   const form = useForm({
@@ -31,6 +33,7 @@ export default function LoginForm() {
     },
   });
   const [error, setError] = useState();
+  const [success, setSuccess] = useState();
 
   const { execute, status } = useAction(emailSignIn, {
     onSuccess(data) {
@@ -91,6 +94,8 @@ export default function LoginForm() {
                 </FormItem>
               )}
             />
+            <FormSuccess message={success} />
+            <FormError message={error} />
             <Button size={'sm'} variant={'link'} asChild>
               <Link href="/auth/reset">Forgot your password</Link>
             </Button>
