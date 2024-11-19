@@ -37,7 +37,8 @@ export default function LoginForm() {
 
   const { execute, status } = useAction(emailSignIn, {
     onSuccess(data) {
-      console.log(data);
+      if (data?.error) setError(data.error);
+      if (data?.success) setSuccess(data.success);
     },
   });
 
