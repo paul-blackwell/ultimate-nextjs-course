@@ -8,6 +8,7 @@ import { users } from '@/server/schema';
 import { generateEmailVerificationToken } from '@/server/actions/tokens';
 import { sendVerificationEmail } from '@/server/actions/email';
 import { signIn } from '@/server/auth';
+import { AuthError } from 'next-auth';
 
 export const emailSignIn = actionClient
   .schema(LoginSchema)
@@ -22,7 +23,7 @@ export const emailSignIn = actionClient
         return { error: 'User not found' };
       }
 
-      // If uses is not verified, send verification email
+      // If user is not verified, send verification email
       if (existingUser?.emailVerified) {
         const verificationToken = await generateEmailVerificationToken(
           existingUser?.email
@@ -46,6 +47,18 @@ export const emailSignIn = actionClient
       return { success: email };
     } catch (error) {
       console.log(error);
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case 'CredentialsSignin':
+            return { error: 'Email or Password Incorrect' };
+          case 'AccessDenied':
+            return { error: error.message };
+          case 'OAuthSignInError':
+            return { error: error.message };
+          default:
+            return { error: 'Something went wrong' };
+        }
+      }
     }
 
     // Check if user is in db
