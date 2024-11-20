@@ -32,11 +32,11 @@ export default function LoginForm() {
       password: '',
     },
   });
-  const [error, setError] = useState();
-  const [success, setSuccess] = useState();
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const { execute, status } = useAction(emailSignIn, {
-    onSuccess(data) {
+    onSuccess({ data }) {
       if (data?.error) setError(data.error);
       if (data?.success) setSuccess(data.success);
     },
